@@ -1,5 +1,12 @@
 FROM nginx:1.23.4-alpine
 
-COPY ./nginx.conf /etc/nginx/nginx.conf
+RUN apk add --no-cache bash sed
+WORKDIR /workspace
 
-EXPOSE 10000
+COPY ./nginx.conf /etc/nginx/nginx.conf.template
+COPY ./entrypoint.sh /workspace/entrypoint.sh
+
+ENV PORT 8080
+
+ENTRYPOINT ["bash", "/workspace/entrypoint.sh"]
+
